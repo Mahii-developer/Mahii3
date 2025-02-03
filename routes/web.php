@@ -1,21 +1,42 @@
 <?php
-
-use App\Http\Controllers\aboutController;
-use App\Http\Controllers\blogController;
-use App\Http\Controllers\cartController;
-use App\Http\Controllers\checkoutController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\servicesController;
-use App\Http\Controllers\shopController;
-use App\Http\Controllers\ThankyouController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Room;
+use App\Http\Controllers\WebController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CartController;
 
-Route::get('/web/index', [HomeController::class, 'HomePage'])->name('web-Home');
-Route::get('/web/about', [AboutController::class, 'AboutPage'])->name('web-about');
-Route::get('/web/blog', [blogController::class, 'blogPage'])->name('web-blog');
-Route::get('/web/cart', [cartController::class, 'cartPage'])->name('web-cart');
-Route::get('/web/checkout', [checkoutController::class, 'checkoutPage'])->name('web-checkout');
-Route::get('/web/services', [servicesController::class, 'servicesPage'])->name('web-services');
-Route::get('/web/shop', [shopController::class, 'shopPage'])->name('web-shop');
-Route::get('/web/Thankyou', [ThankyouController::class, 'ThankyouPage'])->name('web-Thankyou');
+
+Route::get('/', [WebController::class, 'welcome'])->name('layouts-welcome');
+
+// Route::get('shop', [WebController::class, 'shop'])->name('shop');
+
+Route::get('/layouts/home', [webController::class, 'home'])->name('layouts-home');
+Route::get('/layouts/about', [webController::class, 'about'])->name('layouts-about');
+Route::get('/layouts/blog', [webController::class, 'blog'])->name('layouts-blog');
+Route::get('/layouts/contact', [webController::class, 'contact'])->name('layouts-contact');
+Route::get('/layouts/services' ,[WebController::class, 'services'])->name('layouts-services');
+Route::get('/layouts/shop' ,[WebController::class, 'shop'])->name('layouts-shop');
+
+
+// card method
+Route::get('/cart/index', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{productId}', [CartController::class, 'add'])->name('cart.add');
+Route::post('/cart/update', [CartController::class, 'update'])->name('cart.update');
+Route::post('/cart/remove/{productId}', [CartController::class, 'remove'])->name('cart.remove');
+//checkout controller
+
+
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout/place-order', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
+Route::get('/thankyou', function () {
+    return view('thankyou');
+})->name('thankyou');
+
+
+// Admin-Panel Routes
+Route::get('/admin/adminmaster', [webController::class, 'adminmaster'])->name('admin-adminmaster');
+Route::get('/admin/adminhome', [webController::class, 'adminhome'])->name('admin-adminhome');
+Route::get('admin/create_product', [ProductController::class, 'create'])->name('admin-product-create');
+Route::post('admin/store_product', [ProductController::class, 'store'])->name('admin-product-store');
+
+
